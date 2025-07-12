@@ -1,240 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OmniChat | Firebase</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Firebase Chat App</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap">
   <style>
-    * {
+    body, html {
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
+      height: 100%;
+      font-family: 'Roboto', sans-serif;
     }
-
-    body {
-      background-color: #0e1015;
-      color: #ffffff;
+    #root {
+      height: 100%;
     }
-
-    header {
-      background-color: #1a1d23;
-      padding: 1rem 2rem;
+    .loading-screen {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
+      height: 100%;
+      background-color: #f5f5f5;
     }
-
-    .logo {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #00ffaa;
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      border-radius: 50%;
+      border-top-color: #4285f4;
+      animation: spin 1s ease-in-out infinite;
     }
-
-    .main {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2rem;
-    }
-
-    .card {
-      background-color: #1e222a;
-      padding: 2rem;
-      border-radius: 1rem;
-      width: 100%;
-      max-width: 500px;
-      box-shadow: 0 4px 20px rgba(0, 255, 170, 0.1);
-      margin: 1rem 0;
-    }
-
-    .card h2 {
-      color: #00ffaa;
-      margin-bottom: 1rem;
-    }
-
-    input, button, select {
-      width: 100%;
-      padding: 0.8rem;
-      margin: 0.5rem 0;
-      border: none;
-      border-radius: 0.5rem;
-    }
-
-    input {
-      background-color: #2a2e38;
-      color: #ffffff;
-    }
-
-    button {
-      background-color: #00ffaa;
-      color: #000;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #00dd99;
-    }
-
-    .dashboard {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
-      margin-top: 2rem;
-    }
-
-    .log-box, .report-box {
-      background-color: #2a2e38;
-      padding: 1rem;
-      border-radius: 0.75rem;
-    }
-
-    .status {
-      font-size: 0.85rem;
-      color: #888;
-    }
-
-    .chat-ui {
-      border: 1px solid #2a2e38;
-      border-radius: 1rem;
-      overflow: hidden;
-      max-width: 700px;
-      width: 100%;
-      background: #1e222a;
-    }
-
-    .message {
-      padding: 0.75rem;
-      border-bottom: 1px solid #2a2e38;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .message.read .status-icon {
-      color: #00ffaa;
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
   </style>
 </head>
-
 <body>
-  <header>
-    <div class="logo">OmniChat</div>
-    <div id="userStatus">Welcome, <span id="userEmail">you@example.com</span> | Role: <strong>User</strong></div>
-  </header>
-
-  <div class="main">
-    <!-- Auth Section -->
-    <div class="card" id="authCard">
-      <h2>Login / Register</h2>
-      <input type="email" placeholder="Email" id="email" />
-      <input type="password" placeholder="Password" id="password" />
-      <button onclick="login()">Login</button>
-      <button onclick="register()">Register</button>
-      <button onclick="resetPassword()">Forgot Password</button>
-    </div>
-
-    <!-- Profile Section -->
-    <div class="card" id="profileCard" style="display:none">
-      <h2>Your Profile</h2>
-      <p>Email: <span id="profileEmail"></span></p>
-      <p>Role: <span id="profileRole">User</span></p>
-      <button onclick="logout()">Logout</button>
-    </div>
-
-    <!-- Admin Dashboard -->
-    <div class="dashboard" id="adminDashboard" style="display:none">
-      <div class="log-box">
-        <h3>System Logs</h3>
-        <div id="logOutput">No logs available</div>
-      </div>
-      <div class="report-box">
-        <h3>Reports</h3>
-        <button onclick="exportChatHistory()">Export Chat History</button>
-        <p class="status">Last report: <span id="lastReportDate">--/--/----</span></p>
-      </div>
-    </div>
-
-    <!-- Chat UI -->
-    <div class="chat-ui" id="chatUI" style="display:none">
-      <div class="message read">
-        <div>Hey there, stranger 👀</div>
-        <div class="status-icon"><i class="fas fa-check-double"></i></div>
-      </div>
-      <div class="message">
-        <div>Yo! You online?</div>
-        <div class="status-icon"><i class="fas fa-check"></i></div>
-      </div>
+  <div id="root">
+    <div class="loading-screen">
+      <div class="spinner"></div>
     </div>
   </div>
-
-  <!-- Firebase Scripts Here -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyBjh67gaNfzBTk1gNTA-bhvgZG4YX0bjeQ",
-            authDomain: "friends-195c7.firebaseapp.com",
-            databaseURL: "https://friends-195c7-default-rtdb.firebaseio.com",
-            projectId: "friends-195c7",
-            storageBucket: "friends-195c7.firebasestorage.app",
-            messagingSenderId: "487210823099",
-            appId: "1:487210823099:web:30fb0fb91cd484486e289e",
-            measurementId: "G-PSLN4J6DGL"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-
-    function login() {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      auth.signInWithEmailAndPassword(email, password)
-        .then(user => {
-          alert('Logged in!');
-          document.getElementById('authCard').style.display = 'none';
-          document.getElementById('profileCard').style.display = 'block';
-          document.getElementById('chatUI').style.display = 'block';
-          document.getElementById('profileEmail').innerText = email;
-        })
-        .catch(err => alert(err.message));
-    }
-
-    function register() {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      auth.createUserWithEmailAndPassword(email, password)
-        .then(user => {
-          alert('Registered! Please login.');
-        })
-        .catch(err => alert(err.message));
-    }
-
-    function resetPassword() {
-      const email = document.getElementById('email').value;
-      auth.sendPasswordResetEmail(email)
-        .then(() => alert('Password reset email sent!'))
-        .catch(err => alert(err.message));
-    }
-
-    function logout() {
-      auth.signOut().then(() => {
-        document.getElementById('authCard').style.display = 'block';
-        document.getElementById('profileCard').style.display = 'none';
-        document.getElementById('chatUI').style.display = 'none';
-      });
-    }
-
-    function exportChatHistory() {
-      alert('Export feature coming soon...');
-    }
-  </script>
+  <script src="/src/index.js"></script>
 </body>
-
 </html>
