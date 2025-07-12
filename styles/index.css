@@ -1,0 +1,423 @@
+:root {
+  --primary: #4285f4;
+  --primary-dark: #3367d6;
+  --text: #202124;
+  --text-light: #5f6368;
+  --background: #ffffff;
+  --background-secondary: #f5f5f5;
+  --border: #dadce0;
+  --error: #d93025;
+  --success: #0f9d58;
+}
+
+.dark {
+  --primary: #8ab4f8;
+  --primary-dark: #669df6;
+  --text: #e8eaed;
+  --text-light: #9aa0a6;
+  --background: #202124;
+  --background-secondary: #303134;
+  --border: #5f6368;
+  --error: #f28b82;
+  --success: #81c995;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  color: var(--text);
+  background-color: var(--background);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: var(--text);
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s;
+}
+
+.theme-toggle:hover {
+  background-color: var(--background-secondary);
+}
+
+/* Auth styles */
+.auth-container {
+  max-width: 400px;
+  margin: 100px auto;
+  padding: 30px;
+  background-color: var(--background-secondary);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.auth-container h2 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.auth-container input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background-color: var(--background);
+  color: var(--text);
+}
+
+.auth-container button {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.auth-container button:hover {
+  background-color: var(--primary-dark);
+}
+
+.auth-options {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.auth-options button {
+  background: none;
+  color: var(--primary);
+  text-decoration: underline;
+  padding: 0;
+}
+
+.error-message {
+  color: var(--error);
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: rgba(217, 48, 37, 0.1);
+  border-radius: 4px;
+}
+
+.success-message {
+  color: var(--success);
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: rgba(15, 157, 88, 0.1);
+  border-radius: 4px;
+}
+
+/* Chat styles */
+.chat-container {
+  display: flex;
+  height: 100vh;
+}
+
+.chat-sidebar {
+  width: 300px;
+  border-right: 1px solid var(--border);
+  background-color: var(--background-secondary);
+  display: flex;
+  flex-direction: column;
+}
+
+.user-search {
+  padding: 15px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 10px;
+}
+
+.user-search input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background-color: var(--background);
+  color: var(--text);
+}
+
+.user-search button {
+  padding: 10px 15px;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.user-list {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.user-item {
+  padding: 15px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.user-item:hover {
+  background-color: rgba(66, 133, 244, 0.1);
+}
+
+.user-item.active {
+  background-color: rgba(66, 133, 244, 0.2);
+}
+
+.user-item .status {
+  font-size: 0.8em;
+  color: var(--text-light);
+}
+
+.user-item .status.online {
+  color: var(--success);
+}
+
+.chat-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-header {
+  padding: 15px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-header .status {
+  font-size: 0.9em;
+  color: var(--text-light);
+}
+
+.chat-header .status.online {
+  color: var(--success);
+}
+
+.messages {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background-color: var(--background);
+}
+
+.message {
+  margin-bottom: 15px;
+  max-width: 70%;
+}
+
+.message.sent {
+  margin-left: auto;
+}
+
+.message.received {
+  margin-right: auto;
+}
+
+.message-content {
+  padding: 10px 15px;
+  border-radius: 18px;
+  background-color: var(--primary);
+  color: white;
+  display: inline-block;
+}
+
+.message.received .message-content {
+  background-color: var(--background-secondary);
+  color: var(--text);
+}
+
+.message-meta {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 5px;
+  font-size: 0.8em;
+  color: var(--text-light);
+}
+
+.message-meta .time {
+  margin-right: 5px;
+}
+
+.message-form {
+  padding: 15px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 10px;
+}
+
+.message-form input {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background-color: var(--background);
+  color: var(--text);
+}
+
+.message-form button {
+  padding: 12px 20px;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.no-chat-selected {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-light);
+}
+
+/* User status */
+.user-status {
+  padding: 15px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--background-secondary);
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-info .username {
+  font-weight: 500;
+}
+
+.user-info .role {
+  font-size: 0.8em;
+  color: var(--text-light);
+  text-transform: capitalize;
+}
+
+.online-count {
+  font-size: 0.9em;
+  color: var(--text-light);
+}
+
+/* Admin panel styles */
+.admin-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.admin-section {
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: var(--background-secondary);
+  border-radius: 8px;
+}
+
+.admin-section h2 {
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.approval-list {
+  list-style: none;
+}
+
+.approval-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.approval-list li:last-child {
+  border-bottom: none;
+}
+
+.approval-list button {
+  padding: 5px 10px;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.user-table th, .user-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.user-table select {
+  padding: 5px;
+  background-color: var(--background);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.logs-container {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.log-entry {
+  padding: 10px;
+  margin-bottom: 5px;
+  background-color: var(--background);
+  border-radius: 4px;
+  display: flex;
+  gap: 15px;
+}
+
+.log-time {
+  color: var(--text-light);
+  min-width: 150px;
+}
+
+.log-type {
+  font-weight: 500;
+  min-width: 100px;
+  text-transform: capitalize;
+}
